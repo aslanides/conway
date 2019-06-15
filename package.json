@@ -1,0 +1,22 @@
+{
+  "name": "conway",
+  "version": "1.0.0",
+  "description": "Conway's game of life.",
+  "main": "index.js",
+  "scripts": {
+    "serve": "gts fix; parcel src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/aslanides/conway"
+  },
+  "author": "John Aslanides",
+  "license": "ISC",
+  "devDependencies": {
+    "gts": "^1.0.0",
+    "typescript": "^3.5.2"
+  },
+  "dependencies": {
+    "parcel-bundler": "^1.12.3"
+  }
+}
