@@ -13,16 +13,33 @@ function main() {
 
   const gameState = new Uint8ClampedArray(SIZE * SIZE);
   const newState = new Uint8ClampedArray(SIZE * SIZE);
+
+  // Having some fun with RGB.
+  window.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') {
+      PIXEL_OFFSET--;
+    } else if (e.key === 'ArrowRight') {
+      PIXEL_OFFSET++;
+    } else if (e.key === ' ') {
+      PIXEL_OFFSET = 0;
+      reset(gameState);
+    }
+  });
+
+  reset(gameState);
+  setInterval(() => {
+    update(gameState, newState);
+    draw(ctx, gameState);
+  }, Math.floor(1000 / FPS));
+}
+
+// Reset the game state.
+function reset(gameState: Uint8ClampedArray) {
   for (let i = 0; i < SIZE; i++) {
     for (let j = 0; j < SIZE; j++) {
       gameState[j + SIZE * i] = Math.round(Math.random());
     }
   }
-
-  setInterval(() => {
-    update(gameState, newState);
-    draw(ctx, gameState);
-  }, Math.floor(1000 / FPS));
 }
 
 // Draws the game state.
@@ -66,14 +83,5 @@ function update(gameState: Uint8ClampedArray, newState: Uint8ClampedArray) {
     }
   }
 }
-
-// Having some fun with RGB.
-window.addEventListener('keydown', (e: KeyboardEvent) => {
-  if (e.key === 'ArrowLeft') {
-    PIXEL_OFFSET--;
-  } else if (e.key === 'ArrowRight') {
-    PIXEL_OFFSET++;
-  }
-});
 
 main();
