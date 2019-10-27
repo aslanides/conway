@@ -4,7 +4,7 @@
   "description": "Conway's game of life.",
   "main": "index.js",
   "scripts": {
-    "build": "parcel build src/index.html --public-url './' --out-dir docs",
+    "build": "parcel build src/index.html --public-url '/conway/' --out-dir docs",
     "serve": "gts fix; parcel src/index.html"
   },
   "repository": {
