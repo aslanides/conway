@@ -56,6 +56,8 @@ function draw(ctx: CanvasRenderingContext2D, gameState: Uint8ClampedArray) {
     }
   }
   ctx.putImageData(imageData, 0, 0);
+  ctx.fillStyle = 'red';
+  ctx.fillText('spacebar to play/pause. r to reset', 10, 10);
 }
 
 // Updates the game state.
