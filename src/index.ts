@@ -1,6 +1,5 @@
 const SIZE = 800;
 const FPS = 50;
-let PIXEL_OFFSET = 0;
 
 // Initializes and runs the simulation.
 function main() {
@@ -13,33 +12,36 @@ function main() {
 
   const gameState = new Uint8ClampedArray(SIZE * SIZE);
   const newState = new Uint8ClampedArray(SIZE * SIZE);
+  let id = 0;
 
-  // Having some fun with RGB.
+  // Keyboard controls.
   window.addEventListener('keydown', (e: KeyboardEvent) => {
-    if (e.key === 'ArrowLeft') {
-      PIXEL_OFFSET--;
-    } else if (e.key === 'ArrowRight') {
-      PIXEL_OFFSET++;
+    if (e.key === 'r') {
+      reset(ctx, gameState);
     } else if (e.key === ' ') {
-      PIXEL_OFFSET = 0;
-      reset(gameState);
+      if (id) {
+        clearInterval(id);
+        id = 0;
+      } else {
+        id = setInterval(() => {
+          update(gameState, newState);
+          draw(ctx, gameState);
+        }, Math.floor(1000 / FPS));
+      }
     }
   });
 
-  reset(gameState);
-  setInterval(() => {
-    update(gameState, newState);
-    draw(ctx, gameState);
-  }, Math.floor(1000 / FPS));
+  reset(ctx, gameState);
 }
 
 // Reset the game state.
-function reset(gameState: Uint8ClampedArray) {
+function reset(ctx: CanvasRenderingContext2D, gameState: Uint8ClampedArray) {
   for (let i = 0; i < SIZE; i++) {
     for (let j = 0; j < SIZE; j++) {
       gameState[j + SIZE * i] = Math.round(Math.random());
     }
   }
+  draw(ctx, gameState);
 }
 
 // Draws the game state.
@@ -49,8 +51,8 @@ function draw(ctx: CanvasRenderingContext2D, gameState: Uint8ClampedArray) {
     for (let j = 0; j < SIZE; j++) {
       const state = gameState[j + SIZE * i] * 255;
       imageData.data[4 * (j + SIZE * i)] = state;
-      imageData.data[4 * (j + PIXEL_OFFSET + SIZE * i) + 1] = state;
-      imageData.data[4 * (j + 2 * PIXEL_OFFSET + SIZE * i) + 2] = state;
+      imageData.data[4 * (j + SIZE * i) + 1] = state;
+      imageData.data[4 * (j + SIZE * i) + 2] = state;
     }
   }
   ctx.putImageData(imageData, 0, 0);
